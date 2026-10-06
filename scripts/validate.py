@@ -87,6 +87,7 @@ def main() -> None:
             assert parser.meta.get("og:site_name") == "Feynman Lab", file
             assert parser.meta.get("og:image") == BASE + "/assets/og-image.png", file
             assert parser.meta.get("twitter:card") == "summary_large_image", file
+            assert parser.meta.get("twitter:image") == BASE + "/assets/og-image.png", file
             expected = {language: BASE + route(language, page) for language in LOCALES}
             expected["x-default"] = BASE + route("en", page)
             assert parser.alternates == expected, file

@@ -155,7 +155,11 @@ def head(locale: str, page: str) -> str:
         f'<meta property="og:url" content="{canonical}">'
         f'<meta property="og:image" content="{BASE}/assets/og-image.png">'
         '<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">'
+        '<meta property="og:image:alt" content="Feynman Lab — Selected ideas, built for free.">'
         '<meta name="twitter:card" content="summary_large_image">'
+        f'<meta name="twitter:title" content="{tr(locale, title_key)}">'
+        f'<meta name="twitter:description" content="{tr(locale, description_key)}">'
+        f'<meta name="twitter:image" content="{BASE}/assets/og-image.png">'
         f'{structured_data}'
         f'<title>{tr(locale, title_key)}</title></head><body>'
     )
