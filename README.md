@@ -13,4 +13,6 @@ To update the site:
 
 English lives at `/`. The other locales use `/zh-CN/`, `/ja/`, `/es/`, `/pt-BR/`, `/fr/`, and `/de/`. The language menu preserves the current page. Every localized page has its own canonical URL and `hreflang` links.
 
+The homepage's ambient diagram, particle field, and section entrances are implemented in `assets/site.css` and `assets/motion.js`. Motion pauses offscreen and respects reduced-motion preferences.
+
 Ideas can be sent to `torres4koo@gmail.com` from the Submit page. Public [Feynman Lab Discussions](https://github.com/Feynman-Lab/discussions/discussions) remain available as an alternative.

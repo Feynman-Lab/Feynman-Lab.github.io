@@ -114,6 +114,7 @@ def head(locale: str, page: str) -> str:
         f'<link rel="canonical" href="{canonical}">{alternates}'
         '<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">'
         '<link rel="stylesheet" href="/assets/site.css">'
+        '<script src="/assets/motion.js" defer></script>'
         '<meta property="og:type" content="website">'
         f'<meta property="og:title" content="{tr(locale, title_key)}">'
         f'<meta property="og:description" content="{tr(locale, description_key)}">'
@@ -127,11 +128,13 @@ def diagram(locale: str) -> str:
         '<div class="diagram" aria-hidden="true"><svg viewBox="0 0 500 500" role="presentation">'
         '<path class="axis" d="M46 250H454M250 46V454"/><circle class="axis" cx="250" cy="250" r="180"/>'
         '<circle class="axis" cx="250" cy="250" r="113"/>'
+        '<g class="orbit-rotor">'
         '<path class="orbit" d="M87 335C108 405 211 442 295 390S422 250 382 163 232 83 154 147 93 266 187 286 328 219 331 165"/>'
         '<path class="orbit" d="M96 169c31-91 142-129 235-81 87 46 110 147 69 229-35 70-122 111-204 82"/>'
+        '</g>'
         '<circle class="point" cx="87" cy="335" r="7"/><circle class="point" cx="382" cy="163" r="6"/>'
         '<circle class="point-soft" cx="331" cy="165" r="4"/><circle class="point-soft" cx="196" cy="399" r="4"/>'
-        '<circle cx="250" cy="250" r="9" fill="#f7f9fc" stroke="#37689e" stroke-width="2"/>'
+        '<circle class="diagram-core" cx="250" cy="250" r="9"/>'
         f'<text class="note" x="56" y="359">{tr(locale, "diagram_idea")}</text>'
         f'<text class="note" x="383" y="145">{tr(locale, "diagram_build")}</text>'
         '<text class="note" x="267" y="246">LAB</text></svg></div>'
@@ -149,7 +152,7 @@ def home(locale: str) -> str:
         for i in (1, 2, 3)
     )
     return f'''<main>
-<section class="hero" aria-labelledby="hero-title"><div class="wrap hero-grid"><div class="hero-copy">
+<section class="hero" aria-labelledby="hero-title"><canvas class="hero-field" aria-hidden="true"></canvas><div class="wrap hero-grid"><div class="hero-copy">
 <div class="eyebrow">{t("home_eyebrow")}</div><h1 id="hero-title">{t("home_title_first")} <span>{t("home_title_second")}</span></h1>
 <p>{t("home_intro")}</p><div class="hero-actions"><a class="button" href="{submit}">{t("nav_submit")} <span class="arrow" aria-hidden="true">↗</span></a><a class="text-link" href="{projects}">{t("home_see_projects")} <span aria-hidden="true">↗</span></a></div>
 <div class="hero-footnote"><span class="line" aria-hidden="true"></span>{t("home_note")}</div></div>{diagram(locale)}</div></section>
