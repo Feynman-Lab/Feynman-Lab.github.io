@@ -21,6 +21,10 @@ LANGUAGES = {
     "fr": ("🇫🇷", "Français", "FR"),
     "de": ("🇩🇪", "Deutsch", "DE"),
 }
+OPEN_GRAPH_LOCALES = {
+    "en": "en_US", "zh-CN": "zh_CN", "ja": "ja_JP", "es": "es_ES",
+    "pt-BR": "pt_BR", "fr": "fr_FR", "de": "de_DE",
+}
 
 TRANSLATIONS = json.loads((ROOT / "scripts" / "translations.json").read_text(encoding="utf-8"))
 required = set(TRANSLATIONS["en"])
@@ -106,19 +110,53 @@ def head(locale: str, page: str) -> str:
         f'<link rel="alternate" hreflang="{code}" href="{BASE + route(code, page)}">'
         for code in LANGUAGES
     ) + f'<link rel="alternate" hreflang="x-default" href="{BASE + route("en", page)}">'
+    robots_tag = '<meta name="robots" content="noindex,follow">' if page == "projects" else ''
+    structured_data = ""
+    if locale == "en" and page == "":
+        schema = {
+            "@context": "https://schema.org",
+            "@graph": [
+                {
+                    "@type": "Organization",
+                    "@id": BASE + "/#organization",
+                    "name": "Feynman Lab",
+                    "url": BASE + "/",
+                    "logo": BASE + "/assets/logo-512.png",
+                    "sameAs": ["https://github.com/Feynman-Lab"],
+                },
+                {
+                    "@type": "WebSite",
+                    "@id": BASE + "/#website",
+                    "name": "Feynman Lab",
+                    "url": BASE + "/",
+                    "publisher": {"@id": BASE + "/#organization"},
+                    "inLanguage": "en",
+                },
+            ],
+        }
+        structured_data = '<script type="application/ld+json">' + json.dumps(schema, ensure_ascii=False, separators=(",", ":")) + '</script>'
     return (
         '<!doctype html><html lang="' + locale + '"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width, initial-scale=1">'
-        '<meta name="theme-color" content="#f7f9fc">'
+        '<meta name="theme-color" content="#08111f">'
         f'<meta name="description" content="{tr(locale, description_key)}">'
+        f'{robots_tag}'
         f'<link rel="canonical" href="{canonical}">{alternates}'
         '<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">'
+        '<link rel="preconnect" href="https://fonts.googleapis.com">'
+        '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
         '<link rel="stylesheet" href="/assets/site.css">'
         '<script src="/assets/motion.js" defer></script>'
         '<meta property="og:type" content="website">'
+        '<meta property="og:site_name" content="Feynman Lab">'
+        f'<meta property="og:locale" content="{OPEN_GRAPH_LOCALES[locale]}">'
         f'<meta property="og:title" content="{tr(locale, title_key)}">'
         f'<meta property="og:description" content="{tr(locale, description_key)}">'
         f'<meta property="og:url" content="{canonical}">'
+        f'<meta property="og:image" content="{BASE}/assets/og-image.png">'
+        '<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">'
+        '<meta name="twitter:card" content="summary_large_image">'
+        f'{structured_data}'
         f'<title>{tr(locale, title_key)}</title></head><body>'
     )
 
@@ -157,6 +195,7 @@ def home(locale: str) -> str:
 <p>{t("home_intro")}</p><div class="hero-actions"><a class="button" href="{submit}">{t("nav_submit")} <span class="arrow" aria-hidden="true">↗</span></a><a class="text-link" href="{projects}">{t("home_see_projects")} <span aria-hidden="true">↗</span></a></div>
 <div class="hero-footnote"><span class="line" aria-hidden="true"></span>{t("home_note")}</div></div>{diagram(locale)}</div></section>
 <section class="section" id="how-it-works"><div class="wrap"><div class="section-head"><div><div class="eyebrow">{t("process_label")}</div><h2>{t("process_title")}</h2></div><p>{t("process_intro")}</p></div><div class="steps">{steps}</div></div></section>
+<section class="section fit-section"><div class="wrap"><div class="section-head"><div><div class="eyebrow">{t("fit_label")}</div><h2>{t("fit_title")}</h2></div><p>{t("fit_intro")}</p></div><div class="fit-grid">{"".join(f'<div class="fit-item"><h3>{t(f"fit{i}_title")}</h3><p>{t(f"fit{i}_text")}</p></div>' for i in (1, 2, 3, 4))}</div><p class="fit-note">{t("fit_note")}</p></div></section>
 <section class="section" id="projects"><div class="wrap"><div class="section-head"><div><div class="eyebrow">{t("projects_label")}</div><h2>{t("projects_title")}</h2></div><p>{t("projects_intro")}</p></div><div class="project-empty"><div class="empty-art" aria-hidden="true"><span class="cross">✳</span></div><div class="empty-copy"><span class="eyebrow">{t("projects_badge")}</span><h3>{t("projects_empty_title")}</h3><p>{t("projects_empty_text")}</p><a class="text-link" href="{submit}">{t("projects_cta")} <span aria-hidden="true">↗</span></a></div></div></div></section>
 <section class="section"><div class="wrap philosophy"><div><div class="eyebrow">{t("why_label")}</div><p class="statement">{t("why_statement")}</p></div><div class="explain"><p>{t("why_p1")}</p><p>{t("why_p2")}</p><a class="text-link" href="{about}">{t("why_more")} <span aria-hidden="true">↗</span></a></div></div></section>
 <section class="cta-section"><div class="wrap"><div class="cta-panel"><div><div class="eyebrow">{t("cta_label")}</div><h2>{t("cta_title")}</h2><p>{t("cta_text")}</p></div><a class="button light" href="{submit}">{t("nav_submit")} <span class="arrow" aria-hidden="true">↗</span></a></div></div></section>
@@ -206,11 +245,12 @@ def main() -> None:
             target = ROOT / route(locale, page).lstrip("/") / "index.html" if route(locale, page) != "/" else ROOT / "index.html"
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text(head(locale, page) + header(locale, page) + renderers[page](locale) + footer(locale) + '</body></html>\n', encoding="utf-8")
-            urls.append(BASE + route(locale, page))
+            if page != "projects":
+                urls.append(BASE + route(locale, page))
     sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     sitemap += "".join(f"  <url><loc>{url}</loc></url>\n" for url in urls)
     (ROOT / "sitemap.xml").write_text(sitemap + "</urlset>\n", encoding="utf-8")
-    print(f"Built {len(urls)} pages in {len(LANGUAGES)} languages")
+    print(f"Built {len(LANGUAGES) * len(PAGES)} pages in {len(LANGUAGES)} languages; {len(urls)} indexable URLs")
 
 
 if __name__ == "__main__":

@@ -1,31 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://feynman-lab.github.io/</loc></url>
-  <url><loc>https://feynman-lab.github.io/projects/</loc></url>
   <url><loc>https://feynman-lab.github.io/submit/</loc></url>
   <url><loc>https://feynman-lab.github.io/about/</loc></url>
   <url><loc>https://feynman-lab.github.io/zh-CN/</loc></url>
-  <url><loc>https://feynman-lab.github.io/zh-CN/projects/</loc></url>
   <url><loc>https://feynman-lab.github.io/zh-CN/submit/</loc></url>
   <url><loc>https://feynman-lab.github.io/zh-CN/about/</loc></url>
   <url><loc>https://feynman-lab.github.io/ja/</loc></url>
-  <url><loc>https://feynman-lab.github.io/ja/projects/</loc></url>
   <url><loc>https://feynman-lab.github.io/ja/submit/</loc></url>
   <url><loc>https://feynman-lab.github.io/ja/about/</loc></url>
   <url><loc>https://feynman-lab.github.io/es/</loc></url>
-  <url><loc>https://feynman-lab.github.io/es/projects/</loc></url>
   <url><loc>https://feynman-lab.github.io/es/submit/</loc></url>
   <url><loc>https://feynman-lab.github.io/es/about/</loc></url>
   <url><loc>https://feynman-lab.github.io/pt-BR/</loc></url>
-  <url><loc>https://feynman-lab.github.io/pt-BR/projects/</loc></url>
   <url><loc>https://feynman-lab.github.io/pt-BR/submit/</loc></url>
   <url><loc>https://feynman-lab.github.io/pt-BR/about/</loc></url>
   <url><loc>https://feynman-lab.github.io/fr/</loc></url>
-  <url><loc>https://feynman-lab.github.io/fr/projects/</loc></url>
   <url><loc>https://feynman-lab.github.io/fr/submit/</loc></url>
   <url><loc>https://feynman-lab.github.io/fr/about/</loc></url>
   <url><loc>https://feynman-lab.github.io/de/</loc></url>
-  <url><loc>https://feynman-lab.github.io/de/projects/</loc></url>
   <url><loc>https://feynman-lab.github.io/de/submit/</loc></url>
   <url><loc>https://feynman-lab.github.io/de/about/</loc></url>
 </urlset>
