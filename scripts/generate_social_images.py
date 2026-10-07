@@ -62,7 +62,7 @@ def social_card() -> None:
     draw.text((px(82), px(174)), "Ideas into", font=font(108, serif=True), fill=WHITE)
     draw.text((px(82), px(281)), "reality.", font=font(113, serif=True), fill=BLUE)
     draw.line((px(82), px(499), px(670), px(499)), fill="#294260", width=px(1))
-    draw.text((px(82), px(525)), "Selected ideas, built for free.", font=font(25), fill=MUTED)
+    draw.text((px(82), px(525)), "Small ideas. Useful software.", font=font(25), fill=MUTED)
 
     # Scientific diagram, deliberately quieter than the headline.
     center = (960, 304)

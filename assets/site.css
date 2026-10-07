@@ -220,3 +220,32 @@ body{background:var(--paper)}
 @media(max-width:650px){.site-header{top:12px}.header-inner{min-height:0;padding:12px 15px;border-radius:12px;gap:10px}.nav{gap:10px}.nav a:first-child{font-size:12px}.site-header .button.small{min-height:34px;padding:0 10px;max-width:145px;text-align:center;line-height:1.15}.language-options{left:auto;right:-20px}.hero-grid{min-height:0}.hero-copy{padding:178px 0 42px}.hero h1{font-size:clamp(64px,14vw,86px);line-height:.98;margin:28px 0 25px}.hero p{font-size:16px;line-height:1.72}.hero-footnote{margin-top:46px}.diagram{height:270px;border-radius:20px;margin-bottom:55px}.diagram svg{width:280px}.section{padding:75px 0}.section h2{font-size:clamp(42px,11vw,56px)}.section-head{margin-bottom:38px}.step{min-height:0}.step h3{margin-top:25px}.empty-copy h3{font-size:39px}.philosophy .statement{font-size:clamp(42px,10vw,54px)}.cta-section{padding:65px 0 80px}.cta-panel{padding:40px 30px}.cta-panel h2{font-size:55px}.page-hero{padding:177px 0 76px}.page-hero h1{font-size:clamp(60px,13vw,80px)}.page-content{padding:75px 0 90px}.prose-grid h2{font-size:44px}.submission-card{padding:38px 27px}.submission-card h2{font-size:42px}:lang(zh-CN) .hero h1,:lang(ja) .hero h1{font-size:clamp(45px,10vw,60px)}}
 @media(prefers-reduced-motion:reduce){.hero-copy>*,.diagram,.diagram .orbit-rotor,.diagram .point,.diagram .diagram-core{animation:none!important}.button:hover{transform:none}}
 @media(max-width:650px){.fit-grid{grid-template-columns:1fr}.fit-item,.fit-item:nth-child(3){min-height:0;padding:22px 0;border-right:0;border-bottom:1px solid var(--line)}.fit-item:last-child{border-bottom:0}.fit-item p{max-width:none}.fit-note{margin-top:20px}}
+
+/* Trust and submission details keep the lab's operating model visible. */
+.trust-section{background:#eaf0f7}
+.trust-grid{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:clamp(56px,8vw,125px);align-items:start}
+.trust-grid h2{max-width:600px;margin:20px 0 25px}
+.trust-grid p,.trust-answer p{color:#43566d;font-size:16px;line-height:1.8}
+.trust-grid>div:first-child p{max-width:580px}
+.trust-answer{border-left:1px solid #cbd8e7;padding:7px 0 8px 38px}
+.trust-answer h3{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(35px,3.4vw,48px);font-weight:400;letter-spacing:-.03em;line-height:1.15;margin:18px 0}
+.trust-answer .text-link{margin-top:10px}
+.project-empty{display:block;min-height:0;max-width:850px}
+.project-empty .empty-copy{min-height:245px;padding:40px 50px}
+.project-empty .empty-copy h3{margin:15px 0 9px}
+.project-empty .empty-copy p{max-width:600px}
+.source-note{border-top:1px solid var(--line);padding-top:19px;width:100%;font-size:13px!important;margin-top:27px!important}
+.source-note a{color:var(--blue);text-decoration:underline;text-underline-offset:3px}
+.about-sections{display:grid;gap:75px}
+.about-sections>.prose-grid+.prose-grid{border-top:1px solid var(--line);padding-top:70px}
+.about-sections .prose-grid>div:last-child{max-width:650px}
+.about-sections .button{margin-top:15px}
+.submit-details{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:35px;margin-top:75px}
+.submit-details section{border-top:1px solid #cbd8e7;padding-top:25px}
+.submit-details h2{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(28px,2.5vw,39px);font-weight:400;letter-spacing:-.03em;line-height:1.14;margin:0 0 17px}
+.submit-details p{font-size:14px;line-height:1.8;color:var(--muted);margin:0 0 14px}
+.nav .about-link[aria-current="page"]{color:#fff}
+.skip-link{position:absolute;z-index:100;left:20px;top:-100px;padding:12px 16px;background:#fff;color:#14243a;border:2px solid #547cab;font-size:14px;font-weight:700}
+.skip-link:focus{top:16px}
+@media(max-width:900px){.trust-grid{gap:50px}.submit-details{grid-template-columns:1fr 1fr}.submit-details section:last-child{grid-column:1/-1}}
+@media(max-width:650px){.trust-grid{grid-template-columns:1fr;gap:30px}.trust-answer{padding:24px 0 0;border-left:0;border-top:1px solid #cbd8e7}.trust-grid h2{margin-bottom:16px}.project-empty .empty-copy{min-height:0;padding:31px 28px}.about-sections{gap:50px}.about-sections>.prose-grid+.prose-grid{padding-top:48px}.submit-details{grid-template-columns:1fr;gap:27px;margin-top:56px}.submit-details section:last-child{grid-column:auto}.nav{gap:6px}.nav .about-link{font-size:12px}.site-header .button.small{max-width:132px;padding:0 8px}.language-menu summary{font-size:11px}}

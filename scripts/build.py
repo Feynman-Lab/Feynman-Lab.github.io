@@ -73,13 +73,14 @@ def language_menu(locale: str, page: str) -> str:
 
 def header(locale: str, page: str) -> str:
     project_current = ' aria-current="page"' if page == "projects" else ""
+    about_current = ' aria-current="page"' if page == "about" else ""
     submit_current = ' aria-current="page"' if page == "submit" else ""
     return (
         '<header class="site-header"><div class="wrap header-inner">'
         + brand(locale)
         + f'<nav class="nav" aria-label="{tr(locale, "main_navigation")}">'
         + f'<a href="{route(locale, "projects")}"{project_current}>{tr(locale, "nav_projects")}</a>'
-        + '<a class="github-link" href="https://github.com/Feynman-Lab" target="_blank" rel="noopener noreferrer">GitHub ↗</a>'
+        + f'<a class="about-link" href="{route(locale, "about")}"{about_current}>{tr(locale, "nav_about")}</a>'
         + language_menu(locale, page)
         + f'<a class="button small" href="{route(locale, "submit")}"{submit_current}>{tr(locale, "nav_submit")} <span class="arrow" aria-hidden="true">↗</span></a>'
         + '</nav></div></header>'
@@ -155,13 +156,14 @@ def head(locale: str, page: str) -> str:
         f'<meta property="og:url" content="{canonical}">'
         f'<meta property="og:image" content="{BASE}/assets/og-image.png">'
         '<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">'
-        '<meta property="og:image:alt" content="Feynman Lab — Selected ideas, built for free.">'
+        f'<meta property="og:image:alt" content="Feynman Lab — {tr(locale, "tagline")}">'
         '<meta name="twitter:card" content="summary_large_image">'
         f'<meta name="twitter:title" content="{tr(locale, title_key)}">'
         f'<meta name="twitter:description" content="{tr(locale, description_key)}">'
         f'<meta name="twitter:image" content="{BASE}/assets/og-image.png">'
         f'{structured_data}'
         f'<title>{tr(locale, title_key)}</title></head><body>'
+        f'<a class="skip-link" href="#main-content">{tr(locale, "skip_content")}</a>'
     )
 
 
@@ -193,15 +195,15 @@ def home(locale: str) -> str:
         f'<h3>{t(f"step{i}_title")}</h3><p>{t(f"step{i}_text")}</p></div>'
         for i in (1, 2, 3)
     )
-    return f'''<main>
+    return f'''<main id="main-content">
 <section class="hero" aria-labelledby="hero-title"><canvas class="hero-field" aria-hidden="true"></canvas><div class="wrap hero-grid"><div class="hero-copy">
 <div class="eyebrow">{t("home_eyebrow")}</div><h1 id="hero-title">{t("home_title_first")} <span>{t("home_title_second")}</span></h1>
 <p>{t("home_intro")}</p><div class="hero-actions"><a class="button" href="{submit}">{t("nav_submit")} <span class="arrow" aria-hidden="true">↗</span></a><a class="text-link" href="{projects}">{t("home_see_projects")} <span aria-hidden="true">↗</span></a></div>
 <div class="hero-footnote"><span class="line" aria-hidden="true"></span>{t("home_note")}</div></div>{diagram(locale)}</div></section>
+<section class="section trust-section"><div class="wrap trust-grid"><div><div class="eyebrow">{t("why_label")}</div><h2>{t("why_statement")}</h2><p>{t("why_p1")}</p></div><div class="trust-answer"><div class="eyebrow">{t("free_label")}</div><h3>{t("free_title")}</h3><p>{t("free_home_text")}</p><a class="text-link" href="{about}">{t("why_more")} <span aria-hidden="true">↗</span></a></div></div></section>
 <section class="section" id="how-it-works"><div class="wrap"><div class="section-head"><div><div class="eyebrow">{t("process_label")}</div><h2>{t("process_title")}</h2></div><p>{t("process_intro")}</p></div><div class="steps">{steps}</div></div></section>
 <section class="section fit-section"><div class="wrap"><div class="section-head"><div><div class="eyebrow">{t("fit_label")}</div><h2>{t("fit_title")}</h2></div><p>{t("fit_intro")}</p></div><div class="fit-grid">{"".join(f'<div class="fit-item"><h3>{t(f"fit{i}_title")}</h3><p>{t(f"fit{i}_text")}</p></div>' for i in (1, 2, 3, 4))}</div><p class="fit-note">{t("fit_note")}</p></div></section>
-<section class="section" id="projects"><div class="wrap"><div class="section-head"><div><div class="eyebrow">{t("projects_label")}</div><h2>{t("projects_title")}</h2></div><p>{t("projects_intro")}</p></div><div class="project-empty"><div class="empty-art" aria-hidden="true"><span class="cross">✳</span></div><div class="empty-copy"><span class="eyebrow">{t("projects_badge")}</span><h3>{t("projects_empty_title")}</h3><p>{t("projects_empty_text")}</p><a class="text-link" href="{submit}">{t("projects_cta")} <span aria-hidden="true">↗</span></a></div></div></div></section>
-<section class="section"><div class="wrap philosophy"><div><div class="eyebrow">{t("why_label")}</div><p class="statement">{t("why_statement")}</p></div><div class="explain"><p>{t("why_p1")}</p><p>{t("why_p2")}</p><a class="text-link" href="{about}">{t("why_more")} <span aria-hidden="true">↗</span></a></div></div></section>
+<section class="section" id="projects"><div class="wrap"><div class="section-head"><div><div class="eyebrow">{t("projects_label")}</div><h2>{t("projects_title")}</h2></div><p>{t("projects_intro")}</p></div><div class="project-empty"><div class="empty-copy"><span class="eyebrow">{t("projects_badge")}</span><h3>{t("projects_empty_title")}</h3><p>{t("projects_empty_text")}</p><a class="text-link" href="{projects}">{t("home_see_projects")} <span aria-hidden="true">↗</span></a></div></div></div></section>
 <section class="cta-section"><div class="wrap"><div class="cta-panel"><div><div class="eyebrow">{t("cta_label")}</div><h2>{t("cta_title")}</h2><p>{t("cta_text")}</p></div><a class="button light" href="{submit}">{t("nav_submit")} <span class="arrow" aria-hidden="true">↗</span></a></div></div></section>
 </main>'''
 
@@ -213,11 +215,11 @@ def page_hero(locale: str, label: str, title: str, intro: str) -> str:
 def projects_page(locale: str) -> str:
     t = lambda key: tr(locale, key)
     return (
-        '<main>' + page_hero(locale, "projects_label", "projects_title", "project_page_intro")
-        + '<section class="page-content"><div class="wrap"><div class="project-empty">'
-        + '<div class="empty-art" aria-hidden="true"><span class="cross">✳</span></div><div class="empty-copy">'
+        '<main id="main-content">' + page_hero(locale, "projects_label", "projects_title", "project_page_intro")
+        + '<section class="page-content"><div class="wrap"><div class="project-empty"><div class="empty-copy">'
         + f'<span class="eyebrow">{t("projects_badge")}</span><h3>{t("project_page_empty_title")}</h3>'
         + f'<p>{t("project_page_empty_text")}</p><a class="text-link" href="{route(locale, "submit")}">{t("project_page_cta")} <span aria-hidden="true">↗</span></a>'
+        + f'<p class="source-note">{t("project_source_note")} <a href="https://github.com/Feynman-Lab/Feynman-Lab.github.io" target="_blank" rel="noopener noreferrer">{t("project_source_link")} ↗</a></p>'
         + '</div></div></div></section></main>'
     )
 
@@ -226,19 +228,19 @@ def submit_page(locale: str) -> str:
     t = lambda key: tr(locale, key)
     body = "\n\n".join(TRANSLATIONS[locale][f"mail_prompt{i}"] for i in (1, 2, 3)) + "\n"
     mailto = f'mailto:{EMAIL}?subject={quote(TRANSLATIONS[locale]["mail_subject"])}&amp;body={quote(body)}'
-    return f'''<main>{page_hero(locale, "submit_label", "submit_title", "submit_intro")}
+    return f'''<main id="main-content">{page_hero(locale, "submit_label", "submit_title", "submit_intro")}
 <section class="page-content"><div class="wrap"><div class="submission-card"><div class="eyebrow">{t("submit_card_label")}</div><h2>{t("submit_card_title")}</h2><p>{t("submit_card_intro")}</p>
 <ol><li>{t("submit_q1")}</li><li>{t("submit_q2")}</li><li>{t("submit_q3")}</li></ol>
 <a class="button" href="{mailto}">{t("submit_email_button")} <span class="arrow" aria-hidden="true">↗</span></a>
 <p class="fine-print">{t("submit_email_note")} <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>
 <div class="alternate-submit"><span>{t("submit_public_intro")}</span><a class="text-link" href="https://github.com/Feynman-Lab/discussions/discussions/new" target="_blank" rel="noopener noreferrer">{t("submit_public_button")} <span aria-hidden="true">↗</span></a><p class="fine-print">{t("submit_public_note")}</p></div></div>
-<div class="prose-grid next-steps"><div><h2>{t("submit_next_title")}</h2></div><div><p>{t("submit_next_p1")}</p><p>{t("submit_next_p2")}</p></div></div></div></section></main>'''
+<div class="submit-details"><section><h2>{t("submit_fit_title")}</h2><p>{t("submit_fit_yes")}</p><p>{t("submit_fit_no")}</p></section><section><h2>{t("submit_next_title")}</h2><p>{t("submit_next_p1")}</p><p>{t("submit_next_p2")}</p></section><section><h2>{t("submit_privacy_title")}</h2><p>{t("submit_privacy_private")}</p><p>{t("submit_privacy_public")}</p><p>{t("submit_privacy_publish")}</p></section></div></div></section></main>'''
 
 
 def about_page(locale: str) -> str:
     t = lambda key: tr(locale, key)
-    return f'''<main>{page_hero(locale, "about_label", "about_title", "about_intro")}
-<section class="page-content"><div class="wrap prose-grid"><div><h2>{t("about_heading")}</h2></div><div><p>{t("about_p1")}</p><p>{t("about_p2")}</p><p>{t("about_p3")}</p><a class="button" href="{route(locale, "submit")}">{t("about_cta")} <span class="arrow" aria-hidden="true">↗</span></a></div></div></section></main>'''
+    return f'''<main id="main-content">{page_hero(locale, "about_label", "about_title", "about_intro")}
+<section class="page-content"><div class="wrap about-sections"><div class="prose-grid"><div><h2>{t("about_heading")}</h2></div><div><p>{t("about_p1")}</p><p>{t("about_p2")}</p><p>{t("about_p3")}</p></div></div><div class="prose-grid"><div><h2>{t("about_who_title")}</h2></div><div><p>{t("about_who_text")}</p><p><a class="text-link" href="https://github.com/Feynman-Lab" target="_blank" rel="noopener noreferrer">{t("about_github_link")} ↗</a></p></div></div><div class="prose-grid"><div><h2>{t("about_model_title")}</h2></div><div><p>{t("about_model_p1")}</p><p>{t("about_model_p2")}</p><a class="button" href="{route(locale, "submit")}">{t("about_cta")} <span class="arrow" aria-hidden="true">↗</span></a></div></div></div></section></main>'''
 
 
 def main() -> None:

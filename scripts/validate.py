@@ -26,12 +26,19 @@ class PageParser(HTMLParser):
         self.canonical = None
         self.alternates = {}
         self.links = []
+        self.assets = []
+        self.ids = set()
+        self.h1_count = 0
         self.meta = {}
         self.structured_data = []
         self._in_structured_data = False
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         data = dict(attrs)
+        if data.get("id"):
+            self.ids.add(data["id"])
+        if tag == "h1":
+            self.h1_count += 1
         if tag == "html":
             self.lang = data.get("lang")
         if tag == "link" and data.get("rel") == "canonical":
@@ -40,6 +47,10 @@ class PageParser(HTMLParser):
             self.alternates[data.get("hreflang")] = data.get("href")
         if tag == "a" and data.get("href"):
             self.links.append(data["href"])
+        if tag == "link" and data.get("rel") in {"stylesheet", "icon"}:
+            self.assets.append(data.get("href"))
+        if tag == "script" and data.get("src"):
+            self.assets.append(data["src"])
         if tag == "meta":
             self.meta[data.get("name") or data.get("property")] = data.get("content")
         if tag == "script" and data.get("type") == "application/ld+json":
@@ -77,6 +88,8 @@ def main() -> None:
             parser = PageParser()
             parser.feed(file.read_text(encoding="utf-8"))
             assert parser.lang == locale, file
+            assert parser.h1_count == 1, file
+            assert "main-content" in parser.ids and "#main-content" in parser.links, file
             assert parser.canonical == BASE + current, file
             if page == "projects":
                 assert parser.meta.get("robots") == "noindex,follow", file
@@ -92,9 +105,14 @@ def main() -> None:
             expected["x-default"] = BASE + route("en", page)
             assert parser.alternates == expected, file
             for href in parser.links:
+                if href.startswith("#"):
+                    assert href[1:] in parser.ids, (file, href)
                 if href.startswith("/"):
                     target = ROOT / href.lstrip("/") / "index.html" if href != "/" else ROOT / "index.html"
                     assert target.is_file(), (file, href)
+            for asset in parser.assets:
+                if asset.startswith("/"):
+                    assert (ROOT / asset.lstrip("/")).is_file(), (file, asset)
             if page == "submit":
                 mailto = next(link for link in parser.links if link.startswith("mailto:"))
                 parsed = urlparse(mailto)
@@ -104,7 +122,7 @@ def main() -> None:
                 graph = parser.structured_data[0]["@graph"]
                 assert {node["@type"] for node in graph} == {"Organization", "WebSite"}
                 assert next(node for node in graph if node["@type"] == "Organization")["sameAs"] == ["https://github.com/Feynman-Lab"]
-    print("Validated 28 pages, 21 indexable URLs, metadata, structured data, navigation, and email drafts")
+    print("Validated 28 pages, 21 indexable URLs, metadata, assets, navigation, accessibility anchors, and email drafts")
 
 
 if __name__ == "__main__":
